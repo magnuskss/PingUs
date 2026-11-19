@@ -1,0 +1,32 @@
+appId: com.pingus.app
+productName: PingUs
+copyright: Copyright © 2026 PingUs
+# Local installer only — no update server.
+publish: null
+directories:
+  output: release
+  buildResources: build
+files:
+  - out/**/*
+  - package.json
+asarUnpack:
+  - "**/*.node"
+win:
+  icon: build/icon.ico
+  target:
+    - target: nsis
+      arch: [x64]
+  artifactName: ${productName}-${version}-Setup.${ext}
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  installerHeaderIcon: build/icon.ico
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: PingUs
+  uninstallDisplayName: PingUs
+  runAfterFinish: true
+  deleteAppDataOnUninstall: false

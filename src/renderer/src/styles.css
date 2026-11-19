@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --bg: #0a0a0a;
+  --hair: rgba(255, 255, 255, 0.08);
+  --hair-strong: rgba(255, 255, 255, 0.16);
+  --tick: rgba(255, 255, 255, 0.42);
+  --mono: 'JetBrains Mono', 'Cascadia Mono', 'Cascadia Code', Consolas, ui-monospace, monospace;
+}
+
+* {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: #e8e8e8;
+  font-family: 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+
+.selectable,
+.selectable * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+::selection {
+  background: rgba(255, 255, 255, 0.9);
+  color: #050505;
+}
+input,
+textarea {
+  caret-color: #ffffff;
+}
+
+/*
+ * Blueprint backdrop: four faint column rules across the window, like the
+ * construction lines of a layout grid. Fixed, so content scrolls over it.
+ */
+.app-bg {
+  background-color: var(--bg);
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 25% 100%;
+  background-position: -1px 0;
+}
+
+/* Dot matrix for canvases (charts, maps). */
+.dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.11) 1px, transparent 1px);
+  background-size: 14px 14px;
+  background-position: 7px 7px;
+}
+
+/* Diagonal hatching — the signature texture. */
+.hatch {
+  background-image: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.55) 0 1.5px, transparent 1.5px 5px);
+}
+.hatch-dim {
+  background-image: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.14) 0 1px, transparent 1px 6px);
+}
+@keyframes hatch-run {
+  to { background-position: 28px 0; }
+}
+.hatch-run {
+  animation: hatch-run 1.2s linear infinite;
+}
+
+/* Barely-there CRT scanlines over the whole window. */
+.scanlines {
+  pointer-events: none;
+  background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 3px);
+  mix-blend-mode: screen;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+  background-clip: padding-box;
+}
+
+/*
+ * Panel: one hairline, one flat fill, and machined corner ticks top-left and
+ * bottom-right — reads as a measured frame rather than a floating card.
+ */
+.card {
+  position: relative;
+  border-radius: 3px;
+  background: rgba(14, 14, 14, 0.92);
+  border: 1px solid var(--hair);
+}
+.card::before,
+.card::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  pointer-events: none;
+  border-color: var(--tick);
+  border-style: solid;
+}
+.card::before {
+  top: -1px;
+  left: -1px;
+  border-width: 1px 0 0 1px;
+}
+.card::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 1px 1px 0;
+}
+.card-raised {
+  background: #121212;
+  border-color: var(--hair-strong);
+}
+
+.label {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #7a7a7a;
+}
+
+.mono-tag {
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.hairline {
+  border-color: var(--hair);
+}
+
+.drag {
+  -webkit-app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.focusable:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px #0a0a0a, 0 0 0 2px rgba(255, 255, 255, 0.85);
+}
+
+.rule-fade {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hair-strong) 12%, var(--hair-strong) 88%, transparent);
+}
+
+.rule-dashed {
+  background-image: linear-gradient(90deg, var(--hair-strong) 50%, transparent 50%);
+  background-size: 8px 1px;
+  height: 1px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.035) 25%,
+    rgba(255, 255, 255, 0.08) 37%,
+    rgba(255, 255, 255, 0.035) 63%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.82); }
+}
+.pulse-dot {
+  animation: pulse-dot 1.9s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+.blink {
+  animation: blink 1.05s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton,
+  .pulse-dot,
+  .hatch-run,
+  .blink {
+    animation: none;
+  }
+}
